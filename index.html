@@ -337,7 +337,7 @@ footer.legal{margin-top:40px;font-size:.8rem;color:var(--muted);max-width:75ch;d
       {t:"p", text:"PRIMERA. Objeto. EL VENDEDOR vende a EL COMPRADOR el vehículo descrito en la Declaración I, y este lo adquiere para sí."},
       {t:"p", text:"SEGUNDA. Precio y forma de pago. El precio total es de " + money($("p_precio").value) + " (moneda nacional), que EL COMPRADOR paga mediante " + $("p_forma").value + ". EL VENDEDOR entregará el vehículo y los documentos una vez recibido el pago total."},
       {t:"p", text:"TERCERA. Entrega y documentos. El vehículo se entrega el " + fechaLarga($("p_fecha").value) + " a las " + v("p_hora") + " horas. Con él se entregan la factura original endosada a favor de EL COMPRADOR o el documento que acredite la propiedad, la tarjeta de circulación y los comprobantes de pago de contribuciones vehiculares (tenencia, refrendo o sus equivalentes, según la entidad) con que cuente EL VENDEDOR."},
-      {t:"p", text:"CUARTA. Estado del vehículo. EL COMPRADOR declara haber revisado el vehículo y recibirlo en el estado físico y mecánico en que se encuentra. Observaciones: " + v("p_obs","sin observaciones") + ". Lo anterior no excluye la responsabilidad de EL VENDEDOR por vicios ocultos en los términos de la legislación civil aplicable."},
+      {t:"p", text:"CUARTA. Estado del vehículo. EL COMPRADOR declara haber revisado el vehículo y recibirlo en el estado físico y mecánico en que se encuentra. Observaciones: " + v("p_obs","sin observaciones").replace(/[\s.]+$/,"") + ". Lo anterior no excluye la responsabilidad de EL VENDEDOR por vicios ocultos en los términos de la legislación civil aplicable."},
       {t:"p", text:"QUINTA. Gravámenes y adeudos. EL VENDEDOR declara que, a la fecha de entrega y hasta donde es de su conocimiento, el vehículo no tiene gravámenes, reporte de robo ni adeudos de contribuciones vehiculares o multas. Cualquier adeudo o multa generado antes de la fecha y hora de entrega será a cargo de EL VENDEDOR, aunque se conozca después."},
       {t:"p", text:"SEXTA. Responsabilidad antes y después de la entrega. EL VENDEDOR responde por los hechos, infracciones, accidentes y obligaciones relacionados con el vehículo ocurridos antes de la fecha y hora de entrega, y EL COMPRADOR por los ocurridos a partir de ese momento. Si una infracción posterior a la entrega se registra a nombre de EL VENDEDOR porque aún no se realiza el cambio de propietario, EL COMPRADOR se obliga a cubrirla o a reembolsarla."},
       {t:"p", text:"SÉPTIMA. Cambio de propietario. EL COMPRADOR realizará el trámite de cambio de propietario ante la autoridad competente de la entidad donde esté registrado el vehículo, dentro del plazo que fije la normativa de esa entidad. EL VENDEDOR proporcionará los documentos y firmas que el trámite requiera."},
@@ -460,7 +460,9 @@ footer.legal{margin-top:40px;font-size:.8rem;color:var(--muted);max-width:75ch;d
     var W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 54, y;
     function page(blocks){
       y = M;
-      blocks.forEach(function(b){
+      function signsH(n){ return 34 + (Math.ceil(n/2) - 1) * 52 + 40; }
+      blocks.forEach(function(b, idx){
+        var next = blocks[idx + 1];
         if (b.t === "signs") {
           y += 34; var colW = (W - 2*M - 40)/2;
           b.text.forEach(function(s, i){
@@ -476,6 +478,8 @@ footer.legal{margin-top:40px;font-size:.8rem;color:var(--muted);max-width:75ch;d
         var size = b.t === "title" ? 12.5 : b.t === "h" ? 10.5 : 10;
         doc.setFont("times", b.t === "p" ? "normal" : "bold"); doc.setFontSize(size);
         var lines = doc.splitTextToSize(b.text, W - 2*M);
+        // El párrafo de cierre y las firmas van juntos en la misma hoja.
+        if (next && next.t === "signs" && y + lines.length * size * 1.38 + 6 + signsH(next.text.length) > H - M) { doc.addPage(); y = M; }
         lines.forEach(function(line){
           if (y > H - M) { doc.addPage(); y = M; }
           if (b.t === "title") doc.text(line, W/2, y, {align:"center"}); else doc.text(line, M, y);
