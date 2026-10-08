@@ -269,19 +269,26 @@ footer.legal{margin-top:40px;font-size:.8rem;color:var(--muted);max-width:75ch;d
   // Origen del visitante (?src=wa | ads | pdf ...), para separar tráfico de contactos, anuncios y orgánico.
   var SRC = "organico";
   try { var m = location.search.match(/[?&]src=([a-z0-9_-]{1,20})/i); if (m) { SRC = m[1].toLowerCase(); sessionStorage.setItem("ca_src", SRC); } else { SRC = sessionStorage.getItem("ca_src") || SRC; } } catch(e){}
+  // Cola: los eventos esperan a que cargue el script de GoatCounter (si no, los primeros se perderían).
+  var queue = [];
+  function flush(){
+    if (!(window.goatcounter && window.goatcounter.count)) return;
+    while (queue.length) { var n = queue.shift();
+      try {
+        window.goatcounter.count({path: "evento/" + n, title: n, event: true});
+        window.goatcounter.count({path: "evento/" + SRC + "/" + n, title: SRC + " " + n, event: true});
+      } catch(e){}
+    }
+  }
   function track(name, once){
     if (once && sent[name]) return; sent[name] = true;
-    try {
-      if (!DEBUG && window.goatcounter && window.goatcounter.count) { // las pruebas con #debug no se cuentan
-        window.goatcounter.count({path: "evento/" + name, title: name, event: true});
-        window.goatcounter.count({path: "evento/" + SRC + "/" + name, title: SRC + " " + name, event: true});
-      }
-    } catch(e){}
+    if (!DEBUG) { queue.push(name); flush(); } // las pruebas con #debug no se cuentan
     if (DEBUG) dbg.textContent += new Date().toISOString().slice(11,19) + "  " + name + "\n";
   }
   if (GC_ENDPOINT) {
     var s = document.createElement("script");
     s.async = true; s.src = "//gc.zgo.at/count.js"; s.setAttribute("data-goatcounter", GC_ENDPOINT);
+    s.onload = function(){ var tries = 0; (function wait(){ if (window.goatcounter && window.goatcounter.count) flush(); else if (tries++ < 20) setTimeout(wait, 250); })(); };
     document.head.appendChild(s);
   }
 
