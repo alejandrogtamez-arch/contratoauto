@@ -271,18 +271,18 @@ footer.legal{margin-top:40px;font-size:.8rem;color:var(--muted);max-width:75ch;d
   try { var m = location.search.match(/[?&]src=([a-z0-9_-]{1,20})/i); if (m) { SRC = m[1].toLowerCase(); sessionStorage.setItem("ca_src", SRC); } else { SRC = sessionStorage.getItem("ca_src") || SRC; } } catch(e){}
   // Cola: los eventos esperan a que cargue el script de GoatCounter (si no, los primeros se perderían).
   var queue = [];
+  // Se envía un evento cada 350 ms: si se mandan varios en el mismo instante, GoatCounter descarta algunos.
+  var sending = false;
   function flush(){
-    if (!(window.goatcounter && window.goatcounter.count)) return;
-    while (queue.length) { var n = queue.shift();
-      try {
-        window.goatcounter.count({path: "evento/" + n, title: n, event: true});
-        window.goatcounter.count({path: "evento/" + SRC + "/" + n, title: SRC + " " + n, event: true});
-      } catch(e){}
-    }
+    if (sending || !(window.goatcounter && window.goatcounter.count) || !queue.length) return;
+    sending = true;
+    var n = queue.shift();
+    try { window.goatcounter.count({path: n.indexOf("/") < 0 ? "evento/" + n : n, title: n, event: true}); } catch(e){}
+    setTimeout(function(){ sending = false; flush(); }, 350);
   }
   function track(name, once){
     if (once && sent[name]) return; sent[name] = true;
-    if (!DEBUG) { queue.push(name); flush(); } // las pruebas con #debug no se cuentan
+    if (!DEBUG) { queue.push(name); queue.push("evento/" + SRC + "/" + name); flush(); } // las pruebas con #debug no se cuentan
     if (DEBUG) dbg.textContent += new Date().toISOString().slice(11,19) + "  " + name + "\n";
   }
   if (GC_ENDPOINT) {
