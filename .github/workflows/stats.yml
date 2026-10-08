@@ -1,0 +1,49 @@
+# Descarga diariamente los conteos de eventos de GoatCounter (API oficial) y los guarda en stats/.
+# Requiere el secreto GOATCOUNTER_TOKEN (clave de API de GoatCounter con permiso de lectura de estadísticas).
+name: Estadísticas diarias
+on:
+  schedule:
+    - cron: "17 12 * * *"   # todos los días, 06:17 hora de México
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descargar conteos
+        env:
+          GC_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, datetime, pathlib
+          tok = os.environ.get("GC_TOKEN", "")
+          if not tok:
+              raise SystemExit("Falta el secreto GOATCOUNTER_TOKEN")
+          base = "https://contratoauto.goatcounter.com/api/v0"
+          start = "2026-10-08"
+          end = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
+          def get(path):
+              req = urllib.request.Request(base + path, headers={"Authorization": "Bearer " + tok, "Content-Type": "application/json"})
+              with urllib.request.urlopen(req, timeout=60) as r:
+                  return json.load(r)
+          hits, exclude = [], ""
+          for _ in range(20):
+              d = get(f"/stats/hits?start={start}&end={end}&limit=100&daily=true" + (f"&exclude_paths={exclude}" if exclude else ""))
+              hits += d.get("hits", [])
+              if not d.get("more"): break
+              exclude = ",".join(str(h.get("path_id")) for h in hits)
+          out = {"actualizado": datetime.datetime.utcnow().isoformat() + "Z", "desde": start, "hasta": end,
+                 "eventos": {h.get("path"): h.get("count") for h in hits}, "crudo": hits}
+          p = pathlib.Path("stats"); p.mkdir(exist_ok=True)
+          (p / "eventos.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
+          print(len(hits), "rutas")
+          PY
+      - name: Guardar en el repositorio
+        run: |
+          git config user.name "estadisticas-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add stats/eventos.json
+          git diff --cached --quiet || git commit -m "Estadísticas $(date -u +%F)"
+          git push

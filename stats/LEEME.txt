@@ -1,0 +1,1 @@
+Conteos diarios de GoatCounter. Los escribe la tarea automática; no editar a mano.
