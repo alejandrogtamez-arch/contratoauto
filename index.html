@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ContratoAuto MX</title>
+<meta name="description" content="Llena gratis el contrato de compraventa de tu auto usado y la carta responsiva. Listos para imprimir y firmar.">
+<link rel="canonical" href="https://alejandrogtamez-arch.github.io/contratoauto/">
+<meta property="og:title" content="Contrato de compraventa de auto y carta responsiva">
+<meta property="og:description" content="Llena tus datos y ve gratis el contrato y la carta responsiva. PDF final listo para imprimir.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alejandrogtamez-arch.github.io/contratoauto/">
+</head>
+<body>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: form a la izquierda como "trámite", documento a la derecha como hoja; una columna en móvil. */
+:root{
+  --paper:#f5f7f6; --sheet:#ffffff; --ink:#14242b; --muted:#566a70; --line:#d5dfdd;
+  --accent:#0f6b5c; --accent-ink:#ffffff; --stamp:#b5531c; --hl:#fff1c2; --soft:#e7f0ee;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --legal:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1719; --sheet:#172225; --ink:#e3ecea; --muted:#9db0b2; --line:#2b3a3d;
+  --accent:#4fc3a8; --accent-ink:#06211b; --stamp:#e8915f; --hl:#3a3418; --soft:#1c2c2e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1719; --sheet:#172225; --ink:#e3ecea; --muted:#9db0b2; --line:#2b3a3d;
+  --accent:#4fc3a8; --accent-ink:#06211b; --stamp:#e8915f; --hl:#3a3418; --soft:#1c2c2e; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:20px 56px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:4px 20px}
+.brand{font-family:var(--display);font-weight:800;letter-spacing:-.01em;font-size:1.15rem}
+.brand span{color:var(--accent)}
+.free{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,4.2vw,2.6rem);line-height:1.08;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance;max-width:22ch}
+.lead{color:var(--muted);max-width:60ch;margin:0 0 18px}
+.notice{font-size:.8rem;color:var(--muted);margin:0 0 24px}
+.notice a{color:var(--muted)}
+.steps{list-style:none;padding:0;margin:0 0 10px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.95rem}
+.steps li{display:flex;align-items:center;gap:8px}
+.steps b{font-weight:400;min-width:0}
+.steps span{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--mono);font-size:.75rem}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:28px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+form{display:grid;gap:22px}
+fieldset{border:1px solid var(--line);border-radius:6px;padding:14px 14px 16px;margin:0;background:var(--sheet);display:grid;gap:12px;min-width:0}
+legend{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding:0 6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:520px){.row,.row3{grid-template-columns:minmax(0,1fr)}}
+label{display:grid;gap:4px;font-size:.82rem;color:var(--muted);min-width:0}
+input,select,textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:9px 10px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.example{font-family:var(--mono);font-size:.72rem;color:var(--stamp);letter-spacing:.04em}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:inherit;cursor:pointer;border-radius:4px;border:1px solid transparent;padding:11px 16px;font-weight:600}
+.primary{background:var(--accent);color:var(--accent-ink)}
+.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.err{color:var(--stamp);font-size:.85rem;min-height:1.2em}
+.doc-col{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:grid;gap:16px;min-width:0}
+@media (max-width:900px){.doc-col{position:static}}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{background:var(--sheet);border:1px solid var(--line);color:var(--muted);padding:7px 12px;font-size:.85rem}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--ink)}
+.sheet{background:var(--sheet);border:1px solid var(--line);box-shadow:0 1px 0 var(--line),0 12px 30px -18px rgba(0,0,0,.35);padding:28px 26px;font-family:var(--legal);font-size:.92rem;line-height:1.55;max-height:70vh;overflow:auto;min-width:0}
+.sheet h2{font-family:var(--legal);font-size:1.05rem;text-align:center;letter-spacing:.04em;margin:0 0 14px;text-wrap:balance}
+.sheet h3{font-family:var(--legal);font-size:.92rem;margin:14px 0 4px}
+.sheet p{margin:0 0 8px}
+.sheet mark{background:var(--hl);color:inherit;padding:0 2px}
+.signs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 20px;margin-top:30px}
+.sign{border-top:1px solid var(--ink);padding-top:4px;font-size:.8rem;text-align:center}
+.foot{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:22px;border-top:1px dashed var(--line);padding-top:8px}
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:10px}
+.panel h4{margin:0;font-family:var(--display);font-size:1.02rem}
+.panel p{margin:0;color:var(--muted);font-size:.9rem}
+.paybox{border-color:var(--accent);background:linear-gradient(0deg,var(--soft),var(--soft))}
+.paybox ul{margin:0;padding-left:18px;font-size:.9rem}
+.price{font-family:var(--display);font-weight:800;font-size:1.6rem;font-variant-numeric:tabular-nums}
+.price small{font-size:.8rem;font-weight:500;color:var(--muted)}
+.payrow{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px}
+.payrow > div:first-child{min-width:0;flex:1 1 220px;display:grid;gap:4px}
+.sheet{position:relative}
+.wm{position:sticky;top:42%;height:0;text-align:center;pointer-events:none;z-index:1}
+.wm span{display:inline-block;transform:rotate(-16deg);font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.4rem);letter-spacing:.08em;color:var(--stamp);opacity:.16}
+.order{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:6px;padding:12px;margin:0 0 10px;font-size:.9rem}
+.order span{color:var(--muted)}
+.otot{font-family:var(--display);font-weight:800;font-size:1.3rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.otot small{font-size:.75rem;font-weight:500;color:var(--muted)}
+.check{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:.9rem}
+.check li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px}
+.check li::before{content:"";width:14px;height:14px;border:1.5px solid var(--accent);border-radius:3px;margin-top:4px}
+.check a{color:var(--accent)}
+.done-only[hidden]{display:none!important}
+dialog{border:1px solid var(--line);border-radius:8px;background:var(--sheet);color:var(--ink);max-width:min(440px,calc(100vw - 32px));padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h4{margin:0 0 8px;font-family:var(--display)}
+dialog p{margin:0 0 12px;color:var(--muted);font-size:.92rem}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.opts button{background:var(--paper);border-color:var(--line);color:var(--ink);font-weight:500;padding:8px 12px}
+.thanks{color:var(--accent);font-size:.9rem;min-height:1.2em}
+footer.legal{margin-top:40px;font-size:.8rem;color:var(--muted);max-width:75ch;display:grid;gap:6px}
+#debug{font-family:var(--mono);font-size:.72rem;white-space:pre-wrap;background:var(--sheet);border:1px dashed var(--line);padding:10px;margin-top:20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Contrato<span>Auto</span> MX</div>
+    <div class="free">Vista previa gratis · Sin registro</div>
+  </header>
+
+  <h1>Contrato de compraventa de auto y carta responsiva</h1>
+  <p class="lead">Los dos documentos que se usan al vender un auto usado entre particulares en México, llenados con tus datos en minutos.</p>
+  <ol class="steps">
+    <li><span>1</span><b>Llena tus datos</b></li>
+    <li><span>2</span><b>Ve tus documentos completos <strong>gratis</strong></b></li>
+    <li><span>3</span><b>Obtén el PDF final listo para imprimir: <strong class="pval"></strong> MXN</b></li>
+  </ol>
+  <p class="notice">Formato informativo; no sustituye asesoría legal. <a href="#aviso">Ver aviso completo</a></p>
+
+  <div class="grid">
+    <form id="f" novalidate>
+      <span class="example">Los campos traen datos de ejemplo. Reemplázalos con los tuyos.</span>
+      <fieldset>
+        <legend>Vendedor</legend>
+        <label>Nombre completo <input id="v_nombre" required value="Juan Pérez Ramírez" autocomplete="off"></label>
+        <div class="row">
+          <label>Identificación (INE, folio) <input id="v_id" value="INE 1234567890123"></label>
+          <label>Teléfono <input id="v_tel" value="55 1234 5678"></label>
+        </div>
+        <label>Domicilio <input id="v_dom" value="Calle Hidalgo 210, Col. Centro"></label>
+      </fieldset>
+      <fieldset>
+        <legend>Comprador</legend>
+        <label>Nombre completo <input id="c_nombre" required value="María López Garza" autocomplete="off"></label>
+        <div class="row">
+          <label>Identificación (INE, folio) <input id="c_id" value="INE 9876543210987"></label>
+          <label>Teléfono <input id="c_tel" value="55 8765 4321"></label>
+        </div>
+        <label>Domicilio <input id="c_dom" value="Av. Juárez 455, Col. Reforma"></label>
+      </fieldset>
+      <fieldset>
+        <legend>Vehículo</legend>
+        <div class="row3">
+          <label>Marca <input id="a_marca" required value="Nissan"></label>
+          <label>Modelo / versión <input id="a_modelo" required value="Versa Advance"></label>
+          <label>Año <input id="a_anio" required inputmode="numeric" value="2019"></label>
+        </div>
+        <div class="row3">
+          <label>Color <input id="a_color" value="Gris"></label>
+          <label>Placas <input id="a_placas" value="RAB-123-A"></label>
+          <label>Kilometraje <input id="a_km" inputmode="numeric" value="68,500"></label>
+        </div>
+        <div class="row">
+          <label>Número de serie (NIV) <input id="a_niv" required value="3N1CN7AD5KL000000"></label>
+          <label>Número de motor <input id="a_motor" value="HR16123456"></label>
+        </div>
+        <div class="row">
+          <label>Factura (número y emisor) <input id="a_factura" value="A-45821, Nissan Mexicana"></label>
+          <label>Tarjeta de circulación (folio) <input id="a_tarjeta" value="TC-998877"></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Precio y entrega</legend>
+        <div class="row">
+          <label>Precio total (MXN) <input id="p_precio" required inputmode="numeric" value="185000"></label>
+          <label>Forma de pago
+            <select id="p_forma">
+              <option>transferencia bancaria (SPEI)</option>
+              <option>depósito bancario</option>
+              <option>efectivo</option>
+              <option>cheque certificado</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>Fecha de entrega <input id="p_fecha" type="date"></label>
+          <label>Hora de entrega <input id="p_hora" type="time" value="12:00"></label>
+        </div>
+        <div class="row">
+          <label>Municipio o ciudad donde se firma <input id="p_ciudad" required placeholder="Ej. Toluca"></label>
+          <label>Estado
+            <select id="p_estado" required><option value="">Selecciona tu estado</option><option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option><option>Campeche</option><option>Chiapas</option><option>Chihuahua</option><option>Ciudad de México</option><option>Coahuila</option><option>Colima</option><option>Durango</option><option>Estado de México</option><option>Guanajuato</option><option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option><option>Michoacán</option><option>Morelos</option><option>Nayarit</option><option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option><option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option><option>Sinaloa</option><option>Sonora</option><option>Tabasco</option><option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option><option>Yucatán</option><option>Zacatecas</option></select>
+          </label>
+        </div>
+        <label>Observaciones del estado del auto (opcional)
+          <textarea id="p_obs" rows="2">Rayón en defensa trasera. Se entrega con llanta de refacción y gato.</textarea>
+        </label>
+      </fieldset>
+      <div class="actions">
+        <button type="submit" class="primary" id="gen">Generar documentos</button>
+        <button type="button" class="ghost" id="clear">Borrar ejemplo</button>
+      </div>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+
+    <div class="doc-col">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab" role="tab" aria-selected="true" data-doc="contrato" id="t1">Contrato de compraventa</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-doc="carta" id="t2">Carta responsiva</button>
+      </div>
+      <article class="sheet" id="sheet" aria-live="polite"></article>
+      <section class="panel paybox" id="paybox">
+        <div class="payrow">
+          <div>
+            <h4>PDF final, listo para imprimir y firmar</h4>
+            <p>Contrato y carta responsiva con tus datos, sin marca de agua, tamaño carta.</p>
+          </div>
+          <div class="price"><span class="pval"></span> <small>MXN, pago único</small></div>
+        </div>
+        <button type="button" class="primary" id="pdf">Obtener PDF por <span class="pval"></span></button>
+      </section>
+
+      <section class="panel done-only" id="segbox" hidden>
+        <h4>¿Ya tiene seguro el auto?</h4>
+        <p>Si compraste, revisa tu seguro antes de manejarlo. Compara opciones en unos minutos.</p>
+        <button type="button" class="ghost" id="segbtn">Comparar seguros de auto</button>
+      </section>
+
+      <section class="panel" id="lotebox">
+        <h4>¿Vendes autos seguido?</h4>
+        <p>Plan para lotes y vendedores frecuentes: contratos y cartas ilimitados, con los datos de tu negocio guardados, listos en segundos.</p>
+        <div class="price">$299 <small>MXN al mes · próximamente</small></div>
+        <button type="button" class="ghost" id="lotebtn">Me interesa el plan para vendedores</button>
+      </section>
+
+      <section class="panel">
+        <h4>Checklist de seguridad para tu compraventa</h4>
+        <ul class="check">
+          <li><span>Consulta el número de serie (NIV) en el <a href="https://www.repuve.gob.mx" target="_blank" rel="noopener">REPUVE</a> para ver si tiene reporte de robo.</span></li>
+          <li><span>Compara que el NIV coincida en la factura, la tarjeta de circulación y el auto.</span></li>
+          <li><span>Revisa la factura original y que la cadena de endosos esté completa.</span></li>
+          <li><span>Confirma que el nombre en la INE del vendedor coincide con la factura o el último endoso.</span></li>
+          <li><span>Consulta adeudos de contribuciones vehiculares (tenencia o refrendo, según tu estado) y multas en el portal de finanzas de tu estado.</span></li>
+          <li><span>Prefiere transferencia y confirma que el dinero llegó antes de entregar documentos y llaves.</span></li>
+          <li><span>Hagan el trato en un lugar público o en una sucursal bancaria.</span></li>
+          <li><span>Anoten fecha y hora exactas de entrega en la carta responsiva.</span></li>
+          <li><span>Comprador: haz el cambio de propietario en el plazo que fije el estado donde está registrado el auto.</span></li>
+          <li><span>Vendedor: guarda copia firmada de ambos documentos y de las identificaciones. Si tu estado tiene un aviso de venta o de baja, consúltalo con su autoridad.</span></li>
+        </ul>
+        <p>Esta lista es orientativa y no garantiza el resultado de la operación.</p>
+      </section>
+    </div>
+  </div>
+
+  <footer class="legal" id="aviso">
+    <p><strong>Aviso.</strong> ContratoAuto MX ofrece formatos informativos de uso general en México. No somos un despacho jurídico ni una notaría y no prestamos asesoría legal. Revisa los documentos antes de firmarlos y, si tienes dudas, consulta a un profesional. Los requisitos y plazos del cambio de propietario varían por estado: confírmalos con la autoridad de tránsito o finanzas de tu entidad.</p>
+    <p>Privacidad: los datos que escribes se procesan solo en tu navegador y no los guardamos. Medimos visitas y clics de forma anónima para mejorar la herramienta.</p>
+  </footer>
+  <div id="debug" hidden></div>
+</div>
+
+<script>
+(function(){
+  // ---------- Medición (GoatCounter). Se configura al publicar en GitHub Pages. ----------
+  var GC_ENDPOINT = "https://contratoauto.goatcounter.com/count"; // p. ej. "https://contratoauto.goatcounter.com/count"
+  var DEBUG = location.hash === "#debug";
+  var dbg = document.getElementById("debug");
+  if (DEBUG) dbg.hidden = false;
+  var sent = {};
+  // Origen del visitante (?src=wa | ads | pdf ...), para separar tráfico de contactos, anuncios y orgánico.
+  var SRC = "organico";
+  try { var m = location.search.match(/[?&]src=([a-z0-9_-]{1,20})/i); if (m) { SRC = m[1].toLowerCase(); sessionStorage.setItem("ca_src", SRC); } else { SRC = sessionStorage.getItem("ca_src") || SRC; } } catch(e){}
+  function track(name, once){
+    if (once && sent[name]) return; sent[name] = true;
+    try {
+      if (!DEBUG && window.goatcounter && window.goatcounter.count) { // las pruebas con #debug no se cuentan
+        window.goatcounter.count({path: "evento/" + name, title: name, event: true});
+        window.goatcounter.count({path: "evento/" + SRC + "/" + name, title: SRC + " " + name, event: true});
+      }
+    } catch(e){}
+    if (DEBUG) dbg.textContent += new Date().toISOString().slice(11,19) + "  " + name + "\n";
+  }
+  if (GC_ENDPOINT) {
+    var s = document.createElement("script");
+    s.async = true; s.src = "//gc.zgo.at/count.js"; s.setAttribute("data-goatcounter", GC_ENDPOINT);
+    document.head.appendChild(s);
+  }
+
+  // ---------- Prueba de precio (experimento A2): un precio fijo por visitante ----------
+  var PRICES = [49,79,99], price;
+  try { price = parseInt(localStorage.getItem("ca_price_a2"),10); } catch(e){}
+  if (PRICES.indexOf(price) < 0) {
+    price = PRICES[Math.floor(Math.random()*PRICES.length)];
+    try { localStorage.setItem("ca_price_a2", String(price)); } catch(e){}
+  }
+  document.querySelectorAll(".pval").forEach(function(el){ el.textContent = "$" + price; });
+  track("asignado_" + price, true);
+
+  // ---------- Formulario ----------
+  var $ = function(id){ return document.getElementById(id); };
+  var today = new Date(); $("p_fecha").value = today.toISOString().slice(0,10);
+  var f = $("f");
+  f.addEventListener("input", function(){ track("usa_herramienta", true); render(); });
+  f.addEventListener("change", render);
+  $("clear").addEventListener("click", function(){
+    f.querySelectorAll("input:not([type=date]):not([type=time]),textarea").forEach(function(el){ el.value = ""; });
+    document.querySelector(".example").hidden = true;
+    track("usa_herramienta", true); render(); $("v_nombre").focus();
+  });
+
+  function v(id, ph){ var x = ($(id).value || "").trim(); return x ? x : (ph || "________________"); }
+  function money(n){ var x = parseFloat(String(n).replace(/[^0-9.]/g,"")); return isNaN(x) ? "$________" : "$" + x.toLocaleString("es-MX",{minimumFractionDigits:2, maximumFractionDigits:2}); }
+  function fechaLarga(iso){
+    if (!iso) return "____ de __________ de ______";
+    var m = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+    var p = iso.split("-"); return parseInt(p[2],10) + " de " + m[parseInt(p[1],10)-1] + " de " + p[0];
+  }
+
+  // Modelo de documento: lista de bloques {t: 'title'|'h'|'p'|'signs', text}
+  function lugar(){ var c = ($("p_ciudad").value || "").trim(), e = $("p_estado").value; return (c || "________________") + ", " + (e || "________________"); }
+  function contrato(){
+    var auto = v("a_marca") + " " + v("a_modelo") + ", modelo " + v("a_anio") + ", color " + v("a_color") + ", placas " + v("a_placas") + ", número de serie (NIV) " + v("a_niv") + ", número de motor " + v("a_motor") + ", con " + v("a_km") + " km";
+    return [
+      {t:"title", text:"CONTRATO DE COMPRAVENTA DE VEHÍCULO USADO"},
+      {t:"p", text:"En " + lugar() + ", a " + fechaLarga($("p_fecha").value) + ", celebran el presente contrato de compraventa, por una parte, " + v("v_nombre") + ", a quien en lo sucesivo se le denominará «EL VENDEDOR», y por la otra, " + v("c_nombre") + ", a quien en lo sucesivo se le denominará «EL COMPRADOR», al tenor de las siguientes declaraciones y cláusulas."},
+      {t:"h", text:"DECLARACIONES"},
+      {t:"p", text:"I. Declara EL VENDEDOR ser mayor de edad, identificarse con " + v("v_id") + ", tener su domicilio en " + v("v_dom") + " y ser el legítimo propietario del vehículo " + auto + ", lo que acredita con la factura " + v("a_factura") + " (con su cadena de endosos, en su caso) y la tarjeta de circulación con folio " + v("a_tarjeta") + "."},
+      {t:"p", text:"II. Declara EL COMPRADOR ser mayor de edad, identificarse con " + v("c_id") + " y tener su domicilio en " + v("c_dom") + "."},
+      {t:"p", text:"III. Ambas partes declaran que tienen capacidad legal para obligarse y que en este contrato no existe dolo, error ni mala fe."},
+      {t:"h", text:"CLÁUSULAS"},
+      {t:"p", text:"PRIMERA. Objeto. EL VENDEDOR vende a EL COMPRADOR el vehículo descrito en la Declaración I, y este lo adquiere para sí."},
+      {t:"p", text:"SEGUNDA. Precio y forma de pago. El precio total es de " + money($("p_precio").value) + " (moneda nacional), que EL COMPRADOR paga mediante " + $("p_forma").value + ". EL VENDEDOR entregará el vehículo y los documentos una vez recibido el pago total."},
+      {t:"p", text:"TERCERA. Entrega y documentos. El vehículo se entrega el " + fechaLarga($("p_fecha").value) + " a las " + v("p_hora") + " horas. Con él se entregan la factura original endosada a favor de EL COMPRADOR o el documento que acredite la propiedad, la tarjeta de circulación y los comprobantes de pago de contribuciones vehiculares (tenencia, refrendo o sus equivalentes, según la entidad) con que cuente EL VENDEDOR."},
+      {t:"p", text:"CUARTA. Estado del vehículo. EL COMPRADOR declara haber revisado el vehículo y recibirlo en el estado físico y mecánico en que se encuentra. Observaciones: " + v("p_obs","sin observaciones") + ". Lo anterior no excluye la responsabilidad de EL VENDEDOR por vicios ocultos en los términos de la legislación civil aplicable."},
+      {t:"p", text:"QUINTA. Gravámenes y adeudos. EL VENDEDOR declara que, a la fecha de entrega y hasta donde es de su conocimiento, el vehículo no tiene gravámenes, reporte de robo ni adeudos de contribuciones vehiculares o multas. Cualquier adeudo o multa generado antes de la fecha y hora de entrega será a cargo de EL VENDEDOR, aunque se conozca después."},
+      {t:"p", text:"SEXTA. Responsabilidad antes y después de la entrega. EL VENDEDOR responde por los hechos, infracciones, accidentes y obligaciones relacionados con el vehículo ocurridos antes de la fecha y hora de entrega, y EL COMPRADOR por los ocurridos a partir de ese momento. Si una infracción posterior a la entrega se registra a nombre de EL VENDEDOR porque aún no se realiza el cambio de propietario, EL COMPRADOR se obliga a cubrirla o a reembolsarla."},
+      {t:"p", text:"SÉPTIMA. Cambio de propietario. EL COMPRADOR realizará el trámite de cambio de propietario ante la autoridad competente de la entidad donde esté registrado el vehículo, dentro del plazo que fije la normativa de esa entidad. EL VENDEDOR proporcionará los documentos y firmas que el trámite requiera."},
+      {t:"p", text:"OCTAVA. Jurisdicción. Para la interpretación y cumplimiento de este contrato, las partes se someten a las leyes aplicables y a los tribunales competentes de " + lugar() + ", y renuncian al fuero que pudiera corresponderles por razón de sus domicilios presentes o futuros."},
+      {t:"p", text:"Leído el presente contrato y enteradas las partes de su contenido y alcance, lo firman por duplicado en el lugar y fecha indicados."},
+      {t:"signs", text:["EL VENDEDOR\n" + v("v_nombre"), "EL COMPRADOR\n" + v("c_nombre"), "TESTIGO\nNombre y firma", "TESTIGO\nNombre y firma"]}
+    ];
+  }
+  function carta(){
+    return [
+      {t:"title", text:"CARTA RESPONSIVA DE COMPRAVENTA DE VEHÍCULO"},
+      {t:"p", text:"Lugar y fecha: " + lugar() + ", a " + fechaLarga($("p_fecha").value) + "."},
+      {t:"p", text:"Yo, " + v("v_nombre") + ", con identificación " + v("v_id") + " y domicilio en " + v("v_dom") + ", hago constar que el " + fechaLarga($("p_fecha").value) + ", a las " + v("p_hora") + " horas, vendí y entregué a " + v("c_nombre") + ", con identificación " + v("c_id") + " y domicilio en " + v("c_dom") + ", el siguiente vehículo:"},
+      {t:"p", text:"Marca " + v("a_marca") + ", modelo " + v("a_modelo") + ", año " + v("a_anio") + ", color " + v("a_color") + ", placas " + v("a_placas") + ", número de serie (NIV) " + v("a_niv") + ", número de motor " + v("a_motor") + ", kilometraje " + v("a_km") + "."},
+      {t:"p", text:"Precio de la operación: " + money($("p_precio").value) + ", recibido mediante " + $("p_forma").value + "."},
+      {t:"p", text:"A partir de la fecha y hora señaladas, el comprador asume la responsabilidad del vehículo, de su uso y de cualquier infracción, daño, accidente o hecho en que intervenga. El vendedor responde por lo ocurrido antes de ese momento."},
+      {t:"p", text:"Se entregan: la factura " + v("a_factura") + " (endosada, en su caso), la tarjeta de circulación con folio " + v("a_tarjeta") + " y los comprobantes de contribuciones vehiculares disponibles."},
+      {t:"p", text:"Esta carta complementa el contrato de compraventa celebrado por las mismas partes en la misma fecha. Firman de conformidad."},
+      {t:"signs", text:["VENDE Y ENTREGA\n" + v("v_nombre"), "COMPRA Y RECIBE\n" + v("c_nombre")]}
+    ];
+  }
+  var FOOT = "Formato informativo generado con ContratoAuto MX (alejandrogtamez-arch.github.io/contratoauto/). No sustituye asesoría legal. Verifica los requisitos de tu estado.";
+
+  var current = "contrato";
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function render(){
+    var blocks = current === "contrato" ? contrato() : carta();
+    var html = blocks.map(function(b){
+      if (b.t === "title") return "<h2>" + esc(b.text) + "</h2>";
+      if (b.t === "h") return "<h3>" + esc(b.text) + "</h3>";
+      if (b.t === "signs") return "<div class='signs'>" + b.text.map(function(s){ var p = s.split("\n"); return "<div class='sign'><strong>" + esc(p[0]) + "</strong><br>" + esc(p[1]) + "</div>"; }).join("") + "</div>";
+      return "<p>" + esc(b.text).replace(/_{4,}/g, function(m){ return "<mark>" + m + "</mark>"; }) + "</p>";
+    }).join("");
+    $("sheet").innerHTML = "<div class='wm' aria-hidden='true'><span>VISTA PREVIA</span></div>" + html + "<div class='foot'>" + esc(FOOT) + "</div>";
+  }
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.addEventListener("click", function(){
+      current = t.getAttribute("data-doc");
+      document.querySelectorAll(".tab").forEach(function(o){ o.setAttribute("aria-selected", o === t ? "true" : "false"); });
+      render();
+    });
+  });
+
+  var completed = false;
+  function validate(){
+    var req = ["v_nombre","c_nombre","a_marca","a_modelo","a_anio","a_niv","p_precio","p_ciudad","p_estado"];
+    var miss = req.filter(function(id){ return !$(id).value.trim(); });
+    if (miss.length) { $("err").textContent = "Faltan " + miss.length + " datos obligatorios. Llena los campos marcados para generar los documentos."; $(miss[0]).focus(); return false; }
+    $("err").textContent = ""; return true;
+  }
+  function markDone(){
+    if (completed) return; completed = true;
+    track("termina_documento", true);
+    track("termina_documento_" + price, true);
+    track("estado_" + $("p_estado").value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]+/g,"-"), true);
+    $("segbox").hidden = false;
+  }
+  f.addEventListener("submit", function(e){
+    e.preventDefault();
+    track("usa_herramienta", true);
+    if (!validate()) return;
+    render(); markDone();
+    $("paybox").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+  });
+
+  // ---------- PDF (generador mínimo propio, sin librerías externas) ----------
+  // Fuentes estándar de PDF (Times, Helvetica) con codificación WinAnsi: soporta acentos y ñ.
+  var cv = document.createElement("canvas").getContext("2d");
+  function MiniPdf(){
+    var W = 612, H = 792, pages = [], cur = null, font = "F1", size = 10, gray = 0;
+    var FONTS = {times:{normal:"F1", bold:"F2"}, helvetica:{normal:"F3", bold:"F3"}};
+    var CSS = {F1:"Times New Roman, Times, serif", F2:"bold Times New Roman, Times, serif", F3:"Helvetica, Arial, sans-serif"};
+    function enc(s){ // a WinAnsi + escape
+      var out = ""; for (var i = 0; i < s.length; i++){ var c = s.charCodeAt(i);
+        if (c === 0x201C || c === 0x201D) c = 34; else if (c === 0x2018 || c === 0x2019) c = 39; else if (c === 0x2013 || c === 0x2014) c = 45;
+        if (c > 255) c = 63; var ch = String.fromCharCode(c);
+        out += (ch === "(" || ch === ")" || ch === "\\") ? "\\" + ch : ch; }
+      return out;
+    }
+    function width(s){ var parts = CSS[font].split(" "); var bold = parts[0] === "bold";
+      cv.font = (bold ? "bold " : "") + size + "px " + (bold ? parts.slice(1).join(" ") : CSS[font]); return cv.measureText(s).width; }
+    var api = {
+      internal:{pageSize:{getWidth:function(){return W;}, getHeight:function(){return H;}}},
+      addPage:function(){ cur = []; pages.push(cur); return api; },
+      setFont:function(fam, style){ font = (FONTS[fam] || FONTS.times)[style] || "F1"; },
+      setFontSize:function(s){ size = s; },
+      setTextColor:function(g){ gray = (g === 0 ? 0 : g/255); },
+      line:function(x1,y1,x2,y2){ cur.push("0.6 w " + x1.toFixed(1) + " " + (H-y1).toFixed(1) + " m " + x2.toFixed(1) + " " + (H-y2).toFixed(1) + " l S"); },
+      text:function(t, x, y, o){ if (o && o.align === "center") x -= width(t)/2;
+        cur.push("BT " + gray.toFixed(2) + " g /" + font + " " + size + " Tf " + x.toFixed(1) + " " + (H-y).toFixed(1) + " Td (" + enc(t) + ") Tj ET"); },
+      splitTextToSize:function(t, maxW){ var words = t.split(/\s+/), lines = [], line = "";
+        words.forEach(function(w){ var test = line ? line + " " + w : w; if (width(test) > maxW && line){ lines.push(line); line = w; } else line = test; });
+        if (line) lines.push(line); return lines; },
+      output:function(){
+        var objs = [], add = function(s){ objs.push(s); return objs.length; };
+        add("<< /Type /Catalog /Pages 2 0 R >>"); add("");
+        var f1 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman /Encoding /WinAnsiEncoding >>");
+        var f2 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold /Encoding /WinAnsiEncoding >>");
+        var f3 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+        var kids = [];
+        pages.forEach(function(ops){ var s = ops.join("\n");
+          var c = add("<< /Length " + s.length + " >>\nstream\n" + s + "\nendstream");
+          kids.push(add("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + W + " " + H + "] /Resources << /Font << /F1 " + f1 + " 0 R /F2 " + f2 + " 0 R /F3 " + f3 + " 0 R >> >> /Contents " + c + " 0 R >>")); });
+        objs[1] = "<< /Type /Pages /Kids [" + kids.map(function(k){return k + " 0 R";}).join(" ") + "] /Count " + kids.length + " >>";
+        var out = "%PDF-1.4\n%\xE2\xE3\xCF\xD3\n", offs = [];
+        objs.forEach(function(o, i){ offs.push(out.length); out += (i+1) + " 0 obj\n" + o + "\nendobj\n"; });
+        var xref = out.length; out += "xref\n0 " + (objs.length+1) + "\n0000000000 65535 f \n";
+        offs.forEach(function(o){ out += ("0000000000" + o).slice(-10) + " 00000 n \n"; });
+        out += "trailer\n<< /Size " + (objs.length+1) + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF";
+        var bytes = new Uint8Array(out.length); for (var i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+        return new Blob([bytes], {type:"application/pdf"});
+      },
+      save:function(name){ var url = URL.createObjectURL(api.output()); var a = document.createElement("a");
+        a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); }, 4000); }
+    };
+    api.addPage(); return api;
+  }
+  function buildPdf(){
+    var doc = MiniPdf();
+    var W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 54, y;
+    function page(blocks){
+      y = M;
+      blocks.forEach(function(b){
+        if (b.t === "signs") {
+          y += 34; var colW = (W - 2*M - 40)/2;
+          b.text.forEach(function(s, i){
+            if (i % 2 === 0 && i > 0) y += 52;
+            if (y > H - M - 40) { doc.addPage(); y = M + 40; }
+            var x = M + (i % 2) * (colW + 40), p = s.split("\n");
+            doc.line(x, y, x + colW, y);
+            doc.setFont("times","bold"); doc.setFontSize(9); doc.text(p[0], x + colW/2, y + 12, {align:"center"});
+            doc.setFont("times","normal"); doc.text(p[1], x + colW/2, y + 24, {align:"center"});
+          });
+          y += 40; return;
+        }
+        var size = b.t === "title" ? 12.5 : b.t === "h" ? 10.5 : 10;
+        doc.setFont("times", b.t === "p" ? "normal" : "bold"); doc.setFontSize(size);
+        var lines = doc.splitTextToSize(b.text, W - 2*M);
+        lines.forEach(function(line){
+          if (y > H - M) { doc.addPage(); y = M; }
+          if (b.t === "title") doc.text(line, W/2, y, {align:"center"}); else doc.text(line, M, y);
+          y += size * 1.38;
+        });
+        y += b.t === "title" ? 10 : 6;
+      });
+      doc.setFont("helvetica","normal"); doc.setFontSize(7.5); doc.setTextColor(110);
+      doc.text(FOOT, M, H - 30); doc.setTextColor(0);
+    }
+    page(contrato()); doc.addPage(); page(carta());
+    return doc;
+  }
+  function modal(html, onClose){
+    var d = document.createElement("dialog"); d.innerHTML = html; document.body.appendChild(d);
+    d.addEventListener("click", function(e){ if (e.target.closest("[data-close]")) d.close(); });
+    d.addEventListener("close", function(){ if (onClose) onClose(); d.remove(); });
+    d.showModal(); return d;
+  }
+  function savePdf(){
+    try { buildPdf().save("contrato-y-carta-responsiva.pdf"); track("descarga_pdf_" + price); return true; }
+    catch(e){ return false; }
+  }
+
+  // ---------- Experimento A2: pago por descarga ----------
+  // Pantalla de pago real en todo excepto el cobro: al pagar se avisa que el servicio está en prueba,
+  // no se cobra nada y el PDF se entrega gratis.
+  $("pdf").addEventListener("click", function(){
+    track("usa_herramienta", true);
+    if (!validate()) return;
+    render(); markDone();
+    track("pantalla_pago_" + price);
+    var paid = false;
+    var d = modal(
+      "<h4>Tu PDF está listo</h4>" +
+      "<div class='order'><div><strong>Contrato de compraventa + carta responsiva</strong><br><span>" + esc(v("a_marca") + " " + v("a_modelo") + " " + v("a_anio")) + " · PDF tamaño carta, sin marca de agua</span></div>" +
+      "<div class='otot'>$" + price + " <small>MXN</small></div></div>" +
+      "<p>Pago único. Sin suscripción ni registro.</p>" +
+      "<div class='actions'><button type='button' class='primary' id='paynow'>Pagar $" + price + " MXN</button><button type='button' class='ghost' data-close>Ahora no</button></div>",
+      function(){ if (!paid) track("abandono_pago_" + price); });
+    d.querySelector("#paynow").addEventListener("click", function(){
+      paid = true; track("clic_pagar_" + price, true);
+      var ok = savePdf();
+      d.innerHTML =
+        "<h4>Servicio en prueba: no se realizó ningún cargo</h4>" +
+        "<p>Estamos probando ContratoAuto MX y por ahora el PDF es gratis. " + (ok ? "Tu descarga ya comenzó." : "Tu navegador no permitió la descarga; intenta de nuevo.") + "</p>" +
+        "<div class='actions'><button type='button' class='ghost' id='again'>Descargar de nuevo</button></div>" +
+        "<p style='margin-top:14px'>Una pregunta para fijar el precio: cuando el pago esté activo, ¿pagarías $" + price + " por este PDF?</p>" +
+        "<div class='opts'><button type='button' data-int='si'>Sí, $" + price + " está bien</button><button type='button' data-int='menos'>Solo si costara menos</button><button type='button' data-int='no'>No, buscaría uno gratis</button></div>" +
+        "<div class='thanks' aria-live='polite'></div><button type='button' class='ghost' data-close>Cerrar</button>";
+      d.querySelector("#again").addEventListener("click", savePdf);
+      d.querySelectorAll("[data-int]").forEach(function(b){
+        b.addEventListener("click", function(){
+          track("intencion_" + b.getAttribute("data-int") + "_" + price, true);
+          d.querySelector(".thanks").textContent = "Gracias, tu respuesta nos ayuda a decidir el precio.";
+          d.querySelectorAll("[data-int]").forEach(function(x){ x.disabled = true; });
+        });
+      });
+    });
+  });
+
+  // ---------- Hipótesis 2: vendedores frecuentes (solo interés) ----------
+  $("lotebtn").addEventListener("click", function(){
+    track("clic_lotes", true);
+    var d = modal("<h4>El plan para vendedores está en preparación</h4><p>Todavía no está disponible y no se te cobrará nada. Para diseñarlo: ¿cuántos autos vendes al mes?</p><div class='opts'>" +
+      ["1 a 2","3 a 5","6 a 15","Más de 15"].map(function(o,i){ return "<button type='button' data-vol='" + ["1-2","3-5","6-15","16mas"][i] + "'>" + o + "</button>"; }).join("") +
+      "</div><div class='thanks' aria-live='polite'></div><button type='button' class='ghost' data-close>Cerrar</button>");
+    d.querySelectorAll("[data-vol]").forEach(function(b){
+      b.addEventListener("click", function(){
+        track("lotes_volumen_" + b.getAttribute("data-vol"), true);
+        d.querySelector(".thanks").textContent = "Gracias. Con esto decidimos si lo lanzamos.";
+        d.querySelectorAll("[data-vol]").forEach(function(x){ x.disabled = true; });
+      });
+    });
+  });
+  $("segbtn").addEventListener("click", function(){
+    track("clic_seguro", true);
+    modal("<h4>Comparador de seguros en preparación</h4><p>Pronto podrás comparar seguros de auto desde aquí. Mientras tanto, revisa la póliza antes de circular.</p><button type='button' class='ghost' data-close>Cerrar</button>");
+  });
+
+  // Mide si la gente copia el texto de la vista previa en lugar de pagar (pregunta central de A2).
+  $("sheet").addEventListener("copy", function(){ track("copia_texto_" + price, true); });
+  render();
+  track("visita", true);
+})();
+</script>
+
+</body>
+</html>
