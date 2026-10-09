@@ -1,0 +1,26 @@
+{
+  "creado": "2026-10-09",
+  "nota": "Plan elegido por el analista (Alejandro delegó la meta). Supuestos NO medidos; el reporte semanal los reemplaza con tasas reales cuando haya >=560 visitas.",
+  "meta_mensual_mxn": {
+    "probable": 10000,
+    "aspiracional": 50000,
+    "razon": "Plantillas gratis de BBVA, Kavak, DocuSign y ahorraseguros dominan Google; 140 visitas/dia es ambicioso pero alcanzable en ~6 meses; 700/dia (para $50k) requeriria ganarles el primer lugar o un canal B2B con lotes."
+  },
+  "supuestos_embudo": {
+    "usa_herramienta_sobre_visita": 0.40,
+    "termina_sobre_visita": 0.20,
+    "pantalla_pago_sobre_visita": 0.16,
+    "pago_sobre_visita": { "pesimista": 0.015, "base": 0.03, "optimista": 0.05 },
+    "precio_promedio_mxn": 79,
+    "ingreso_por_visita_base_mxn": 2.37
+  },
+  "hitos": [
+    { "hasta": "2026-11-08", "visitas_dia_promedio": 30, "objetivo": "senal temprana: ~560 visitas acumuladas (~30 pantallas de pago por precio)" },
+    { "hasta": "2027-01-08", "visitas_dia_promedio": 70, "objetivo": "compuerta de cobro (~1,900 visitas acumuladas); ritmo equivalente a ~$5,000/mes" },
+    { "hasta": "2027-04-08", "visitas_dia_promedio": 140, "objetivo": "ritmo equivalente a ~$10,000/mes (meta probable)" }
+  ],
+  "alertas": {
+    "atraso": "promedio de visitas de los ultimos 7 dias < 50% del hito vigente",
+    "ads": "ads solo aceleran el experimento; no son rentables si costo por clic > ingreso por visita (~$2.37 MXN base)"
+  }
+}
