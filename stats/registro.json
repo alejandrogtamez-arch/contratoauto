@@ -1,14 +1,13 @@
 {
- "actualizado": "2026-11-05T13:20:38.125885Z",
+ "actualizado": "2026-11-06T13:14:11.063817Z",
  "token_presente": true,
  "llamadas": [
   {
-   "ruta": "/stats/total?start=2026-10-08T00:00:00Z&end=2026-11-06T00:00:00Z",
-   "estado": 404,
-   "error": "{\"error\":\"not found\"}"
+   "ruta": "/stats/total?start=2026-10-08T00:00:00Z&end=2026-11-07T00:00:00Z",
+   "estado": 200
   },
   {
-   "ruta": "/stats/hits?start=2026-10-08T00:00:00Z&end=2026-11-06T00:00:00Z&limit=100",
+   "ruta": "/stats/hits?start=2026-10-08T00:00:00Z&end=2026-11-07T00:00:00Z&limit=100",
    "estado": 200
   }
  ]
